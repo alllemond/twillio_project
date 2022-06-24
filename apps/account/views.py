@@ -1,3 +1,5 @@
+
+from re import U
 from rest_framework.views import APIView
 from .serializers import RegistrationSerializer
 from django.contrib.auth import get_user_model
@@ -18,3 +20,16 @@ class RegistrationView(APIView):
                 status=201
                 )
         return Response(serializer.errors, status=400)
+
+
+class ActivationView(APIView):
+    def get(self, request, code):
+        user = User.objects.filter(activation_code=code).first()
+        if user:
+            user.is_active=True
+            user.save()
+            return Response(
+                'Your account is active',
+                status=200
+            )
+        return Response('Invalid activation code', status=400)

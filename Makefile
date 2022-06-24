@@ -4,4 +4,7 @@ run:
 migrate:
 	python3 manage.py makemigrations
 	python3 manage.py migrate
+runcelery:
+	celery -A config worker -l INFO
 
+	
